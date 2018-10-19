@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-chdir(__DIR__);
-
 ini_set('error_reporting', E_ALL);
 
 $files = [__DIR__ . '/../vendor/autoload.php'];

@@ -14,13 +14,13 @@ return [
     'zf_symfony_container' => [
 
         // directory where to look for the service container configurations like services.yaml
-        'config_dir' => 'sandbox/config',
+        'config_dir' => 'tests/sandbox/config',
 
         // Caching options
         'cache' => [
 
             // directory where the cached container will be stored
-            'dir' => 'sandbox/data/ZfSymfonyContainer',
+            'dir' => 'tests/sandbox/data/ZfSymfonyContainer',
 
             // enable in dev mode
             'debug' => true
