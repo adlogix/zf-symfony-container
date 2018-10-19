@@ -1,0 +1,4 @@
+composer.lock
+tests/sandbox/data/ZfSymfonyContainer
+vendor
+*.cache
