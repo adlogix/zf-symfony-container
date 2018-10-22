@@ -52,7 +52,16 @@ return [
 
 # Usage
 
-To retrieve the symfony container a zend controller:
+Any existing service will directly be available through the Service Manager of Zend:
+
+```php
+<?php
+
+$service = $this->getServiceLocator()->get(\My\Public\Service::class);
+```
+
+But you can also retrieve the symfony container:
+
 
 ```php
 <?php

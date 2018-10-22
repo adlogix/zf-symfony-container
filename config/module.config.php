@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */
 
+use Adlogix\ZfSymfonyContainer\Service\Factory\SymfonyContainerAbstractFactory;
 use Adlogix\ZfSymfonyContainer\Service\Factory\SymfonyContainerConfigFactory;
 use Adlogix\ZfSymfonyContainer\Service\Factory\SymfonyContainerFactory;
 
@@ -43,8 +44,12 @@ return [
 
     'service_manager' => [
 
+        'abstract_factories' => [
+            SymfonyContainerAbstractFactory::class
+        ],
+
         'factories' => [
-            'zf_symfony_container'        => SymfonyContainerFactory::class,
+            'zf_symfony_container' => SymfonyContainerFactory::class,
             'zf_symfony_container_config' => SymfonyContainerConfigFactory::class,
         ]
 
