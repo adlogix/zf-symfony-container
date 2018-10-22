@@ -11,7 +11,6 @@
 
 namespace Adlogix\ZfSymfonyContainer\Service\Factory;
 
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

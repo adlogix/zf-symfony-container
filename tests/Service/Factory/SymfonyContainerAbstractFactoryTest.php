@@ -11,7 +11,6 @@
 
 namespace Adlogix\ZfSymfonyContainer\Test\Service\Factory;
 
-
 use Adlogix\ZfSymfonyContainer\Test\Fixtures\DummyTwo;
 use Adlogix\ZfSymfonyContainer\Test\Util\ServiceManagerFactory;
 use PHPUnit\Framework\TestCase;
