@@ -49,7 +49,7 @@ return [
         ],
 
         'factories' => [
-            'zf_symfony_container' => SymfonyContainerFactory::class,
+            'zf_symfony_container'        => SymfonyContainerFactory::class,
             'zf_symfony_container_config' => SymfonyContainerConfigFactory::class,
         ]
 
