@@ -4,5 +4,15 @@ services:
 
     autowire: true      # Automatically injects dependencies in your services.
 
+  #
+  # Define service that needs to be retrieved via the Zend Service Manager
+  #
+
+  Adlogix\ZfSymfonyContainer\Test\Fixtures\Zend\DummyThree:
+    factory: ['Adlogix\ZfSymfonyContainer\Service\Factory\ZendServiceProxyFactory', getService]
+    arguments: ['@zend.container', 'Adlogix\ZfSymfonyContainer\Test\Fixtures\Zend\DummyThree']
+    class: Adlogix\ZfSymfonyContainer\Test\Fixtures\Zend\DummyThree
+
   Adlogix\ZfSymfonyContainer\Test\Fixtures\:
     resource: '../../Fixtures/*'
+    exclude: '../../Fixtures/Zend/*'
