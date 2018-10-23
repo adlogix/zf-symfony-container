@@ -37,10 +37,10 @@ final class SymfonyContainerFactory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $zfContainer, $requestedName, array $options = null)
     {
         /** @var Configuration $configuration */
-        $configuration = $container->get('zf_symfony_container_config');
+        $configuration = $zfContainer->get('zf_symfony_container_config');
 
         $cachedFilePath = $configuration->getCacheDir() . DIRECTORY_SEPARATOR . $configuration->getCacheFilename();
 
@@ -50,6 +50,13 @@ final class SymfonyContainerFactory implements FactoryInterface
             $containerBuilder = new ContainerBuilder();
             $loader = new YamlFileLoader($containerBuilder, new FileLocator([$configuration->getConfigDir()]));
             $loader->load('services.yaml');
+
+            // Register a synthetic service placement. This is where we are going to inject the zend service manager.
+            // This is important so we can make use of the ZendServiceProxyFactory
+            $containerBuilder
+                ->register('zend.container')
+                ->setSynthetic(true);
+
             $containerBuilder->compile();
 
             $dumper = new PhpDumper($containerBuilder);
@@ -64,6 +71,9 @@ final class SymfonyContainerFactory implements FactoryInterface
 
         require_once $cachedFilePath;
 
-        return new \Adlogix\ZfSymfonyContainer\DependencyInjection\CachedContainer();
+        $cachedContainer = new \Adlogix\ZfSymfonyContainer\DependencyInjection\CachedContainer();
+        $cachedContainer->set('zend.container', $zfContainer);
+
+        return $cachedContainer;
     }
 }

@@ -52,7 +52,11 @@ return [
 
 # Usage
 
-Any existing service will directly be available through the Service Manager of Zend:
+Refer to the documentation of the [Symfony DI Component](https://symfony.com/doc/3.4/components/dependency_injection.html) for information on how to use the DI container.
+
+#### Obtain a symfony defined service
+
+Any existing symfony service will directly be available through the Service Manager of Zend:
 
 ```php
 <?php
@@ -60,13 +64,40 @@ Any existing service will directly be available through the Service Manager of Z
 $service = $this->getServiceLocator()->get(\My\Public\Service::class);
 ```
 
-But you can also retrieve the symfony container:
+#### Build a symfony defined service with a Zend service dependency
 
+It will happen that you have to use a dependency which is already loaded into the Zend Service Manager. For example, if you are using the Doctrine Module and you
+need to have the instance of the Entity Manager, you can leverage the ZendServiceProxyFactory class:
+
+```yaml
+services:
+
+  _defaults:
+
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    public: false       # Allows optimizing the container by removing unused services; this also means
+                        # fetching services directly from the container via $container->get() won't work.
+                        # The best practice is to be explicit about your dependencies anyway.
+
+  #
+  # Define service that needs to be retrieved via the Zend Service Manager
+  #
+
+  Doctrine\ORM\EntityManagerInterface:
+    factory: ['Adlogix\ZfSymfonyContainer\Service\Factory\ZendServiceProxyFactory', getService]
+    arguments: ['@zend.container', 'doctrine.entitymanager.orm_default']
+    class: Doctrine\ORM\EntityManagerInterface
+
+```
+
+With this configuration, and service defined with the symfony container requiring an instance of Doctrine\ORM\EntityManagerInterface will receive this from
+the Zend Service Manager.
+
+#### Obtain the symfony container instance
 
 ```php
 <?php
 
 $container = $this->getServiceLocator()->get('zf_symfony_container');
 ```
-
-Refer to the documentation of the [Symfony DI Component](https://symfony.com/doc/3.4/components/dependency_injection.html) for more information on how to use the container.

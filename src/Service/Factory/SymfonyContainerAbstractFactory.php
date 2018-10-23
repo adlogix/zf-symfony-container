@@ -16,6 +16,10 @@ use Zend\ServiceManager\AbstractFactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
+ * Abstract Zend factory which will delegate service lookup in the symfony container when available.
+ *
+ * This allows to load symfony services transparently via the traditional $serviceLocator->get() method.
+ *
  * @author Toni Van de Voorde <toni@adlogix.eu>
  */
 final class SymfonyContainerAbstractFactory implements AbstractFactoryInterface

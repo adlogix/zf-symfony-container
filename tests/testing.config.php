@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+use Adlogix\ZfSymfonyContainer\Test\Fixtures\Zend\DummyThree;
+
 return [
 
     'zf_symfony_container' => [
@@ -27,4 +29,12 @@ return [
 
         ],
     ],
+
+    'service_manager' => [
+
+        'invokables' => [
+            DummyThree::class => DummyThree::class
+        ]
+
+    ]
 ];
