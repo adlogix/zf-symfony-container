@@ -12,6 +12,7 @@
 namespace Adlogix\ZfSymfonyContainer\Service\Factory;
 
 use Adlogix\ZfSymfonyContainer\Options\Configuration;
+use Adlogix\ZfSymfonyContainer\ParameterBag\ZendFrameworkParameterBag;
 use Interop\Container\ContainerInterface;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\FileLocator;
@@ -31,13 +32,13 @@ final class SymfonyContainerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return $this($serviceLocator, SymfonyContainerFactory::class);
+        return $this($serviceLocator, SymfonyContainerFactory::class, $serviceLocator->get('config'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ContainerInterface $zfContainer, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $zfContainer, $requestedName, array $config = null)
     {
         /** @var Configuration $configuration */
         $configuration = $zfContainer->get('zf_symfony_container_config');
@@ -47,7 +48,7 @@ final class SymfonyContainerFactory implements FactoryInterface
         $containerConfigCache = new ConfigCache($cachedFilePath, $configuration->isDebug());
 
         if (!$containerConfigCache->isFresh()) {
-            $containerBuilder = new ContainerBuilder();
+            $containerBuilder = new ContainerBuilder(new ZendFrameworkParameterBag($config));
             $loader = new YamlFileLoader($containerBuilder, new FileLocator([$configuration->getConfigDir()]));
             $loader->load('services.yaml');
 
