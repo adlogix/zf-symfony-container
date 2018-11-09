@@ -8,7 +8,7 @@ Zend Framework module to leverage the symfony dependency injection container
 1. Install the module via composer by running:
 
 ```bash
-composer require adlogix/zf-symfony-container:^0.3
+composer require adlogix/zf-symfony-container:^0.4
 ```
 
 2. Add the `Adlogix\ZfSymfonyContainer` module to the module section of your `config/application.config.php`
