@@ -101,3 +101,36 @@ the Zend Service Manager.
 
 $container = $this->getServiceLocator()->get('zf_symfony_container');
 ```
+
+#### Use the Zend config as Symfony parameters
+The module takes care of transforming all zend configurations into [Symfony parameters](https://symfony.com/doc/current/service_container/parameters.html) allowing you to immediately use the parameters in the service definition file:
+```php
+<?php
+// global.php
+return [
+    'myconfig' => 'hello world' 
+];
+```
+```yaml
+services:
+  Some\Service:
+    arguments: ['%myconfig%']
+```
+When the Zend configuration contains deep level keys, the "keys" will be concatenated with a dot.
+```php
+<?php
+// global.php
+return [
+    'deep' => [
+        'level' => [
+            'config' => 'hello world'            
+        ]    
+    ]    
+];
+```
+```yaml
+services:
+  Some\Service:
+    arguments: ['%deep.level.config%']
+```
+_Note: zend configurations using callables will be ignored and cannot be used!_ 
