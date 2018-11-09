@@ -103,50 +103,34 @@ $container = $this->getServiceLocator()->get('zf_symfony_container');
 ```
 
 #### Use the Zend config as Symfony parameters
-The Zend config is translated into Symfony parameter. Please refer to the documentation of [Symfony parameters](https://symfony.com/doc/current/service_container/parameters.html) for more information.
-Each level of the Zend config is concatenate with a '.'. 
-
-By example this Zend configuration:  
+The module takes care of transforming all zend configurations into [Symfony parameters](https://symfony.com/doc/current/service_container/parameters.html) allowing you to immediately use the parameters in the service definition file:
+```php
+<?php
+// global.php
+return [
+    'myconfig' => 'hello world' 
+];
 ```
-[
- 'zf_symfony_container' => [
- 
-         // directory where to look for the service container configurations (e.g. config/services.yaml)
-         'config_dir' => 'config',
- 
-         // Caching options
-         'cache' => [
- 
-             // directory where the cached container will be stored
-             'dir' => 'data/ZfSymfonyContainer',
- 
-             // name of the file to generate the cached container class
-             'filename' => 'zf_symfony_container_cache',
- 
-             // name of the class of the generated cached container
-             'classname' => 'CachedContainer',
- 
-             // the namespace of the generated cached container
-             'namespace' => 'Adlogix\ZfSymfonyContainer\DependencyInjection',
- 
-             // enable in dev mode
-             'debug' => false
-         ],
- 
- 
-     ],
-]
+```yaml
+services:
+  Some\Service:
+    arguments: ['%myconfig%']
 ```
-
-Will give these parameters:
+When the Zend configuration contains deep level keys, the "keys" will be concatenated with a dot.
+```php
+<?php
+// global.php
+return [
+    'deep' => [
+        'level' => [
+            'config' => 'hello world'            
+        ]    
+    ]    
+];
 ```
-parameters:
-    zf_symfony_container.config_dir: 'config'
-    zf_symfony_container.cache.dir: 'data/ZfSymfonyContainer'
-    zf_symfony_container.cache.filename: 'zf_symfony_container_cache'
-    zf_symfony_container.cache.classname: 'CachedContainer'
-    zf_symfony_container.cache.namespace: 'Adlogix\ZfSymfonyContainer\DependencyInjection'
-    zf_symfony_container.cache.debug: false
+```yaml
+services:
+  Some\Service:
+    arguments: ['%deep.level.config%']
 ```
-
-All callbacks are ignored.
+_Note: zend configurations using callables will be ignored and cannot be used!_ 
