@@ -32,13 +32,13 @@ final class SymfonyContainerFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return $this($serviceLocator, SymfonyContainerFactory::class, $serviceLocator->get('config'));
+        return $this($serviceLocator, SymfonyContainerFactory::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __invoke(ContainerInterface $zfContainer, $requestedName, array $config = null)
+    public function __invoke(ContainerInterface $zfContainer, $requestedName, array $options = null)
     {
         /** @var Configuration $configuration */
         $configuration = $zfContainer->get('zf_symfony_container_config');
@@ -48,7 +48,8 @@ final class SymfonyContainerFactory implements FactoryInterface
         $containerConfigCache = new ConfigCache($cachedFilePath, $configuration->isDebug());
 
         if (!$containerConfigCache->isFresh()) {
-            $containerBuilder = new ContainerBuilder(new ZendFrameworkParameterBag($config));
+            $zfConfig = $zfContainer->get('config');
+            $containerBuilder = new ContainerBuilder(new ZendFrameworkParameterBag($zfConfig));
             $loader = new YamlFileLoader($containerBuilder, new FileLocator([$configuration->getConfigDir()]));
             $loader->load('services.yaml');
 
